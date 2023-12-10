@@ -51,10 +51,17 @@ public class Field implements FieldOption {
 	//this method check if the field matches the required features
 	public boolean checkFeatures(Features requiredFeatures) {
 		
-		if (this.features.ac == requiredFeatures.ac &&
-				this.features.heating == requiredFeatures.heating &&
-				this.features.indoor == requiredFeatures.indoor)
-			return true;
-		return false;
+		if(requiredFeatures.indoor && ! features.indoor) {
+			return false;
+		}
+		if(requiredFeatures.heating && ! features.heating) {
+			return false;
+		}
+		if (requiredFeatures.ac && ! features.ac) {
+			return false;
+		}
+		return true;
+
 	}
+
 }

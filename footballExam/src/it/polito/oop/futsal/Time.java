@@ -67,4 +67,13 @@ public class Time {
 	public void setMm(int mm) {
 		this.mm = mm;
 	}
+	
+	//this method calculate the difference between two times in terms of minutes
+	public int diffTime(Time t2) {
+		Time res = new Time("00:00");
+		res.hh = this.hh - t2.hh;
+		res.mm = this.mm - t2.mm;
+		
+		return res.hh * 60 + res.mm;
+	}
 }

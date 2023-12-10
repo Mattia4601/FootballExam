@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Represents a infrastructure with a set of playgrounds, it allows teams
@@ -125,7 +126,8 @@ public class Fields {
     	
     	Associate ass = associates.get(associate);
     	fieldsMap.get(field).addBooking(time,ass);
-    	
+    	// we also save that the associate has booked some field
+    	ass.setFlag();
     }
 
     public boolean isBooked(int field, String time) {
@@ -147,24 +149,42 @@ public class Fields {
 //    The method findOptions() gets a schedule and an object Features, and returns the list of options
 //    available in the fields that have the required characteristics and are free at the specified time.
     public List<FieldOption> findOptions(String time, Features required){
-        return fieldsMap.values().stream()
-        		.filter( f -> f.checkIfBooked(time)) //check if the time slot is already booked
+
+    	return fieldsMap.values().stream()
+    			.filter( f -> f.checkIfBooked(time)==false) //check if the time slot is already booked
         		.filter(f -> f.checkFeatures(required)) //check if the required features match 
         		.sorted(Comparator.comparing(FieldOption::getOccupation).reversed().thenComparing(FieldOption::getField))
-        		.toList();
+        		.collect(Collectors.toList());
         		
     }
-    
+    //countServedAssociates() returns the total number of associates who have made at least one reservation.
     public long countServedAssociates() {
-        return -1;
+        return associates.values().stream()
+        		.filter(a->a.hasBooked()==true) //we need only the associates who has booked some field
+        		.count();
     }
-    
+//  fieldTurnover() returns a map with keys the ids of the fields, and values the number of reservations at these fields.
     public Map<Integer,Long> fieldTurnover() {
-        return null;
+        return fieldsMap.values().stream()
+        		.collect(Collectors.toMap(Field::getField, f->(long)f.getOccupation()));
     }
-    
+//  occupation() returns the occupation level of the facility in terms of percentage. 
+//  It is calculated as the ratio of the number of reservations in all fields and the number of blocks from one hour available between opening and closing times.
     public double occupation() {
-        return -1;
+        //get the number of reservable slots
+    	double reservableSlots = this.getNumberOfSlots()*fieldsMap.size();
+        		
+        //get the total number of reservations
+    	double totalRes = fieldsMap.values().stream()
+    			.mapToInt(f->f.getOccupation())
+    			.sum();
+        		
+        		
+        return totalRes/reservableSlots;		
     }
-    
+	
+	// This method calculate the number of slots we have for a fields facility
+	public int getNumberOfSlots() {
+		return ( closingTime.diffTime(openingTime) )/60;
+	}
  }

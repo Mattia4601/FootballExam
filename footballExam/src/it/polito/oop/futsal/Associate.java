@@ -4,7 +4,7 @@ public class Associate {
 	private String first;
 	private String last;
 	private String phone;
-	
+	private boolean flag=false;
 	public Associate(String first, String last, String phone) {
 		super();
 		this.first=first;
@@ -36,5 +36,12 @@ public class Associate {
 		this.phone = phone;
 	}
 	
-	
+	//this metod set the flag to true
+	public void setFlag() {
+		this.flag=true;
+	}
+	//this method tells us if the associate has booked any fields
+	public boolean hasBooked() {
+		return flag;
+	}
 }

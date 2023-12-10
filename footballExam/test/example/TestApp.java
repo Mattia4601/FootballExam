@@ -52,27 +52,27 @@ public final class TestApp {
         fields.bookField(3, p2, "14:30");
         fields.bookField(3, p3, "15:30");
         
-//// R4
-//        List<FieldOption> options = fields
-//        		.findOptions("17:30",
-//        				new Features(true,		// indoor -> REQUIRED
-//        							 false,     // heating --> DON'T CARE
-//        							 false));   // AC --> DONT'R CARE
-//      
-//        assertNotNull(options);
-//        assertEquals(3,options.size()); // only three fields are indoor
-//        assertEquals(3,options.get(0).getField()); // field 2
-//
-//        int p4 = fields.newAssociate("Ivo", "Uva", "3336665544");
-//        fields.bookField(2, p4, "18:30");
-//        fields.bookField(2, p1, "20:30");
-//        
-//// R5
-//        assertEquals(4,fields.countServedAssociates());
-//        assertEquals(0.16,fields.occupation(),0.01);
-//        
-//        Map<Integer,Long> ft = fields.fieldTurnover();
-//        assertNotNull(ft);
+// R4
+        List<FieldOption> options = fields
+        		.findOptions("17:30",
+        				new Features(true,		// indoor -> REQUIRED
+        							 false,     // heating --> DON'T CARE
+        							 false));   // AC --> DONT'R CARE
+      
+        assertNotNull(options);
+        assertEquals(3,options.size()); // only three fields are indoor
+        assertEquals(3,options.get(0).getField()); // field 2
+
+        int p4 = fields.newAssociate("Ivo", "Uva", "3336665544");
+        fields.bookField(2, p4, "18:30");
+        fields.bookField(2, p1, "20:30");
+        
+// R5
+        assertEquals(4,fields.countServedAssociates());
+        assertEquals(0.16,fields.occupation(),0.01);
+        
+        Map<Integer,Long> ft = fields.fieldTurnover();
+        assertNotNull(ft);
 //        assertEquals(2L,ft.get(2).longValue());
     }
 }
